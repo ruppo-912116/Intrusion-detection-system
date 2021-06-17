@@ -1,0 +1,25 @@
+
+version: '3.3'
+volumes:
+  nginx-dhparam:
+networks:
+  frontend:
+    external: true
+services:
+  nginx:
+    image: mesudip/nginx-proxy:with-modsecurity
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - frontend
+    ports:
+      - 8000:8000
+      - 8888:8888
+      - 443:443
+    restart: always
+    volumes:
+      - /etc/ssl:/etc/ssl
+      - nginx-dhparam:/etc/nginx/dhparam
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/log/nginx/:/var/log/nginx/ 
